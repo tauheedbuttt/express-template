@@ -1,13 +1,19 @@
 const response = require("./response.helper");
 
 module.exports = {
-    handleDecoderesponse: (err) => {
+    handleDecoderesponse: ({ err, res, next }) => {
         if (err.name == "TokenExpiredError")
-            return response.forbidden(res, "Your request is not authorized as your token is expired.")
+            return next
+                ? next(new Error("Your request is not authorized as your token is expired."))
+                : response.forbidden(res, "Your request is not authorized as your token is expired.")
         else if (err.name == "JsonWebTokenError")
-            return response.forbidden(res, "Your request is not authorized as token is invalid.")
+            return next
+                ? next(new Error("Your request is not authorized as token is invalid."))
+                : response.forbidden(res, "Your request is not authorized as token is invalid.")
         else
-            return response.forbidden(res, err)
+            return next
+                ? next(new Error(err))
+                : response.forbidden(res, err)
     },
 
     createToken: (data) => {

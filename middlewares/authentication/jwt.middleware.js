@@ -8,7 +8,7 @@ const jwtVerify = (req, res, next) => {
     token,
     process.env.JWT_SECRET_KEY,
     async function (err, decoded) {
-      if (err) return handleDecodeErrors(err)
+      if (err) return handleDecodeErrors({ err, res })
 
       const { sub, iam, name } = decoded;
       next();
