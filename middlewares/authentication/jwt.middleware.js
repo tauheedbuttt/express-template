@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 const response = require("../../helpers/response.helper");
 const { handleDecodeErrors } = require("../../helpers/jwt.helper");
+const User = require("../../models/User");
 
 const jwtVerify = (req, res, next) => {
-  const token = req.headers["Authorization"]?.replace("Bearer ", "");;
+  const token = req.headers["authorization"]?.replace("Bearer ", "");;
   jwt.verify(
     token,
     process.env.JWT_SECRET_KEY,
@@ -11,6 +12,18 @@ const jwtVerify = (req, res, next) => {
       if (err) return handleDecodeErrors({ err, res })
 
       const { sub, iam, name } = decoded;
+
+      const user = await User
+        .findOne({
+          _id: sub,
+          status: 'Approved'
+        })
+        .select('-password');
+
+      if (!user) return response.auth(res, 'Unauthorized')
+
+      req.user = user;
+
       next();
     }
   );

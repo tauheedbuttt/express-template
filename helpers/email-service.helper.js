@@ -4,25 +4,30 @@ const ejs = require("ejs");
 
 module.exports = {
   sendEmail: async (type, data) => {
-    var from = process.env.EMAIL_MAIL;
-    var user = process.env.EMAIL_USER;
-    var pass = process.env.EMAIL_PASS;
+    const baseEmail = {
+      from: process.env.EMAIL_MAIL,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      secure: process.env.EMAIL_SECURE == "true" ? true : false,
+    }
 
     const emails = {
-      "SignUp": {
-        subject: "Signup",
-        file: "../public/views/temp.ejs",
+      "Reset Password": {
+        subject: "Password Reset Request.",
+        file: "../public/views/reset-email.ejs",
         data: {}
       },
     };
 
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      secure: process.env.EMAIL_SECURE == "true" ? true : false,
+      host: baseEmail.host,
+      port: baseEmail.port,
+      secure: baseEmail.secure,
       auth: {
-        user: user,
-        pass: pass,
+        user: baseEmail.user,
+        pass: baseEmail.pass,
       },
     });
 
@@ -39,7 +44,7 @@ module.exports = {
 
     transporter.sendMail(
       {
-        from: from,
+        from: baseEmail.from,
         to: data.email,
         subject: email.subject,
         html,
