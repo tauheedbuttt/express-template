@@ -65,4 +65,26 @@ module.exports = {
         })
         return filter
     },
+
+    uniqueQuery: (unique) => {
+        const query = unique
+            .map(item => {
+                if (!item.value) return null;
+                const query = {};
+                query[`${item.field}`] = item.value
+                return query;
+            })
+            .filter(item => item);
+
+        const message = `Account already exists for this ${unique
+                .filter(item => item.value)
+                .map(item => item.field)
+                .join('/')
+            }`;
+
+        return {
+            query: query.length == 0 ? {} : { '$or': query },
+            message
+        }
+    }
 }

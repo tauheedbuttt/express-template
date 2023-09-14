@@ -1,7 +1,8 @@
+const jwt = require("jsonwebtoken");
 const response = require("./response.helper");
 
 module.exports = {
-    handleDecoderesponse: ({ err, res, next }) => {
+    handleDecodeErrors: ({ err, res, next }) => {
         if (err.name == "TokenExpiredError")
             return next
                 ? next(new Error("Your request is not authorized as your token is expired."))
