@@ -65,18 +65,19 @@ fs.writeFileSync(routeFilePath, routeContent);
 // Create the new controller file with dynamic content
 const controllerContent = `const response = require("${helpersRelativePath}/response.helper");
 
+
 module.exports = {
-    get${routeName}s: async (req, res) => {
+    get${routeName}: async (req, res) => {
         return response.success(
             res,
-            '${routeName}s fetched successfully',
+            '${routeName} fetched successfully',
         )
     },
 
     add${routeName}: async (req, res) => {
         return response.success(
             res,
-            '${routeName}s fetched successfully',
+            '${routeName} added successfully',
         )
     },
 
