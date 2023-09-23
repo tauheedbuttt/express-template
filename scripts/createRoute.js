@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { Collection, Item, Request, Response } = require('postman-collection');
 
 // Get the route argument from the command line
 const route = process.argv[2];
@@ -51,7 +52,7 @@ const { jwtVerify } = require("${relativePath}/middlewares/authentication/jwt.mi
 
 const router = require("express").Router();
 
-router.get('/', jwtVerify, ${routeName}Controller.get${routeName}s)
+router.get('/', jwtVerify, ${routeName}Controller.get${routeName})
 router.post('/add', jwtVerify, ${routeName}Controller.add${routeName})
 router.delete('/delete/:id', jwtVerify, ${routeName}Controller.delete${routeName})
 router.put('/update/:id', jwtVerify, ${routeName}Controller.update${routeName})
@@ -64,7 +65,6 @@ fs.writeFileSync(routeFilePath, routeContent);
 
 // Create the new controller file with dynamic content
 const controllerContent = `const response = require("${helpersRelativePath}/response.helper");
-
 
 module.exports = {
     get${routeName}: async (req, res) => {
@@ -100,5 +100,83 @@ module.exports = {
 const controllerFilePath = path.join(controllerFolderPath, `${routeName.toLowerCase()}.controller.js`);
 fs.writeFileSync(controllerFilePath, controllerContent);
 
+// Create a Postman Collection
+const collection = new Collection({
+    info: {
+        name: routeName
+    },
+});
+
+// Define the routes and their corresponding methods and descriptions
+const routes = [
+    {
+
+        method: 'GET',
+        path: `${route}`,
+        description: `Get ${route}`,
+        name: `Get ${routeName}`,
+    },
+    {
+
+        method: 'POST',
+        path: `${route}/add`,
+        description: `Add ${route}`,
+        name: `Add ${routeName}`,
+    },
+    {
+
+        method: 'PUT',
+        path: `${route}/update/:id`,
+        description: `Update ${route}`,
+        name: `Update ${routeName}`,
+    },
+    {
+
+        method: 'DELETE',
+        path: `${route}/delete/:id`,
+        description: `Delete ${route}`,
+        name: `Delete ${routeName}`,
+    },
+];
+
+// Create folders for each route and add requests to the collection
+for (const routeInfo of routes) {
+    const { method, path, description, name } = routeInfo;
+
+    const folderName = routeName;
+    let folder = collection.items.find((item) => item.name === folderName);
+
+    // If the folder doesn't exist, create it
+    if (!folder) {
+        folder = new Collection();
+        folder.name = routeName;
+        collection.items.add(folder);
+    }
+
+    const request = new Request({
+        method,
+        url: `{{BaseURL}}/${path}`,
+        description,
+    });
+    request.url.query = [];
+
+    const item = new Item({
+        name,
+        request,
+    });
+
+    folder.items.add(item);
+}
+
+// Export the Postman Collection to a JSON file
+const postmanFolderPath = path.join(__dirname, '..', 'postman');
+const postmanFilePath = path.join(postmanFolderPath, 'routes_collection.json');
+
+createDirectories(postmanFolderPath);
+
+fs.writeFileSync(postmanFilePath, JSON.stringify(collection.toJSON(), null, 2));
+
+
 console.log(`Route created: ${routeFilePath}`);
 console.log(`Controller created: ${controllerFilePath}`);
+console.log(`Postman collection exported to: ${postmanFilePath}`);
