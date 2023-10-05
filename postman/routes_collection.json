@@ -1,0 +1,146 @@
+{
+  "item": [
+    {
+      "item": [
+        {
+          "id": "7d416007-6d7d-4d19-8b22-3e2aaf196f26",
+          "name": "Get Jobs",
+          "request": {
+            "description": {
+              "content": "Get jobs",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "jobs"
+              ],
+              "host": [
+                "{{BaseURL}}"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": 0
+                },
+                {
+                  "key": "page",
+                  "value": 1
+                },
+                {
+                  "key": "limit",
+                  "value": 10
+                },
+                {
+                  "key": "text",
+                  "value": "Test"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "b89ff151-71f6-4a1d-a1fe-ef7cc06cc276",
+          "name": "Add Jobs",
+          "request": {
+            "description": {
+              "content": "Add jobs",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "jobs",
+                "add"
+              ],
+              "host": [
+                "{{BaseURL}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Test\"}"
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "59da8712-2b87-4126-b141-cd4993fd467b",
+          "name": "Update Jobs",
+          "request": {
+            "description": {
+              "content": "Update jobs",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "jobs",
+                "update",
+                ":id"
+              ],
+              "host": [
+                "{{BaseURL}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Test\"}"
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "eaa8e5ee-0626-4a39-950e-79a37924827d",
+          "name": "Delete Jobs",
+          "request": {
+            "description": {
+              "content": "Delete jobs",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "jobs",
+                "delete",
+                ":id"
+              ],
+              "host": [
+                "{{BaseURL}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE",
+            "body": {}
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": [],
+      "variable": [],
+      "info": {
+        "_postman_id": "975d407f-adde-47cf-9085-a6a1e54688f0",
+        "name": "Jobs",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+      }
+    }
+  ],
+  "event": [],
+  "variable": [],
+  "info": {
+    "_postman_id": "113007c2-f13f-4fc1-8363-753e639c30d4",
+    "name": "Jobs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  }
+}

@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const User = require('../models/User');
 
-const response = require('../helpers/response.helper');
 const { createToken } = require('../helpers/jwt.helper');
 const { uniqueQuery } = require('../helpers/filter.helper');
 const { sendEmail } = require('../helpers/email-service.helper');
@@ -9,7 +8,7 @@ const { jwtVerify } = require("../middlewares/authentication/jwt.middleware");
 
 module.exports = {
     profile: async (req, res) => {
-        return response.success(res, 'Profile fetched successuflly', req.user)
+        return res.success('Profile fetched successuflly', req.user)
     },
 
     login: async (req, res) => {
@@ -17,14 +16,14 @@ module.exports = {
 
         // get user
         const user = await User.findOne({ email })
-        if (!user) return response.forbidden(res, 'Invalid Email or Password');
-        if (user.status != 'Approved') return response.forbidden(res, 'Your account has not been approved yet');
+        if (!user) return res.forbidden('Invalid Email or Password');
+        if (user.status != 'Approved') return res.forbidden('Your account has not been approved yet');
 
         try {
             // compare password
             await user.comparePassword(password);
         } catch (err) {
-            return response.forbidden(res, 'Invalid Email or Password')
+            return res.forbidden('Invalid Email or Password')
         }
 
         const token = createToken({
@@ -33,7 +32,7 @@ module.exports = {
             name: user.name
         })
 
-        return response.success(res, 'Login successfull', { token })
+        return res.success('Login successfull', { token })
     },
 
     register: async (req, res) => {
@@ -45,7 +44,7 @@ module.exports = {
         } = req.body;
 
         if (password != confirmPassword)
-            return response.forbidden(res, 'Confirm Password is not same as Password.');
+            return res.forbidden('Confirm Password is not same as Password.');
 
         const unique = [
             {
@@ -62,7 +61,7 @@ module.exports = {
         const existing = await User.findOne({
             ...uniqueResult.query
         })
-        if (existing) return response.forbidden(res, uniqueResult.message)
+        if (existing) return res.forbidden(uniqueResult.message)
 
         const user = new User({
             name,
@@ -71,7 +70,7 @@ module.exports = {
         })
 
         await user.save();
-        return response.success(res, 'Registration Successfull', user)
+        return res.success('Registration Successfull', user)
     },
 
     update: async (req, res) => {
@@ -96,14 +95,14 @@ module.exports = {
             ...uniqueResult.query
         })
 
-        if (existing) return response.forbidden(res, uniqueResult.message)
+        if (existing) return res.forbidden(uniqueResult.message)
 
         user.email = email ? email : user.email;
         user.name = name ? name : user.name;
 
         await user.save();
 
-        return response.success(res, 'Profile updated successuflly', user)
+        return res.success('Profile updated successuflly', user)
     },
 
     forgot: async (req, res) => {
@@ -111,7 +110,7 @@ module.exports = {
 
         // check if user exists
         const user = await User.findOne({ email })
-        if (!user) return response.forbidden(res, 'No account found against this email');
+        if (!user) return res.forbidden('No account found against this email');
 
         // generate reset token
         const resetToken = crypto.randomBytes(20).toString('hex');
@@ -130,7 +129,7 @@ module.exports = {
             url
         })
 
-        response.success(res, 'Password reset link sent to email.')
+        res.success('Password reset link sent to email.')
     },
 
     reset: async (req, res) => {
@@ -138,23 +137,23 @@ module.exports = {
 
         // validate inputs
 
-        if (resetPasswordToken && old_password) return error(res, 'resetPasswordToken and old_password can not come at the same time');
-        if (!new_password) return error(res, 'new_password is missing');
-        if (!confirm_password) return error(res, 'confirm_password is missing');
-        if (confirm_password != new_password) return error(res, 'confirm_password not same as new_password');
+        if (resetPasswordToken && old_password) return error('resetPasswordToken and old_password can not come at the same time');
+        if (!new_password) return error('new_password is missing');
+        if (!confirm_password) return error('confirm_password is missing');
+        if (confirm_password != new_password) return error('confirm_password not same as new_password');
 
         // Normal Password Reset
         if (!resetPasswordToken) {
-            if (!old_password) response.notFound(res, 'old_password is missing');
-            return jwtVerify(req, res, async () => {
+            if (!old_password) res.notFound('old_password is missing');
+            return jwtVerify(req, async () => {
                 try {
                     const user = await User.findById(req.user.id);
                     await user.comparePassword(old_password)
                     user.password = new_password
                     await user.save({ validateBeforeSave: false });
-                    response.success(res, 'Password changed successfully.', { changed: true })
+                    res.success('Password changed successfully.', { changed: true })
                 } catch (err) {
-                    response.forbidden(res, 'old_password is not same as current password')
+                    res.forbidden('old_password is not same as current password')
                 }
             })
         }
@@ -162,16 +161,16 @@ module.exports = {
         // Forgot Password Reset
         if (!old_password) {
             if (!resetPasswordToken)
-                return response.forbidden(res, 'resetPasswordToken is missing')
+                return res.forbidden('resetPasswordToken is missing')
         }
 
         // check the resetPasswordToken
         const user = await User.findOne({ resetPasswordToken })
-        if (!user) return response.notFound('Invalid reset token')
+        if (!user) return res.notFound('Invalid reset token')
 
         // if the token is expired
         if (Date.now() > user.resetPasswordExpire)
-            return response.forbidden(res, 'The token is expired')
+            return res.forbidden('The token is expired')
 
         // update password and remove token
         user.password = new_password
@@ -179,6 +178,6 @@ module.exports = {
         user.resetPasswordExpire = undefined
         await user.save({ validateBeforeSave: false });
 
-        response.success(res, 'Password changed successfully.', { changed: true })
+        res.success('Password changed successfully.', { changed: true })
     }
 };

@@ -7,6 +7,7 @@ require("express-async-errors");
 require("./models/index.js");
 const { fallBack, errorHandler } = require("./middlewares/error.middleware");
 const router = require("./routes/index.js");
+const { responseHandler } = require("./middlewares/response.middleware.js");
 // const engines = require("consolidate");
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(
 app.use(logger("dev"));
 /**End Using Middlewares */
 
+app.use(responseHandler);
 /**Main application router*/
 app.use(router)
 

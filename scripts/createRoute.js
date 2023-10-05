@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { Collection, Item, Request, Response } = require('postman-collection');
+const { Collection, Item, Request, res } = require('postman-collection');
 
 // Get the route argument from the command line
 const route = process.argv[2];
@@ -64,35 +64,23 @@ const routeFilePath = path.join(routeFolderPath, routeFileName);
 fs.writeFileSync(routeFilePath, routeContent);
 
 // Create the new controller file with dynamic content
-const controllerContent = `const response = require("${helpersRelativePath}/response.helper");
+const controllerContent = `
 
 module.exports = {
     get${routeName}: async (req, res) => {
-        return response.success(
-            res,
-            '${routeName} fetched successfully',
-        )
+        return res.success('${routeName} fetched successfully')
     },
 
     add${routeName}: async (req, res) => {
-        return response.success(
-            res,
-            '${routeName} added successfully',
-        )
+        return res.success('${routeName} added successfully')
     },
 
     update${routeName}: async (req, res) => {
-        return response.success(
-            res,
-            '${routeName} Updated Successfully'
-        )
+        return res.success('${routeName} Updated Successfully)
     },
 
     delete${routeName}: async (req, res) => {
-        return response.success(
-            res,
-            '${routeName} deleted successfully'
-        )
+        return res.success('${routeName} deleted successfully)
     }
 };
 `;

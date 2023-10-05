@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const response = require("../../helpers/response.helper");
 const { handleDecodeErrors } = require("../../helpers/jwt.helper");
 const User = require("../../models/User");
 
@@ -20,7 +19,7 @@ const jwtVerify = (req, res, next) => {
         })
         .select('-password');
 
-      if (!user) return response.auth(res, 'Unauthorized')
+      if (!user) return res.auth('Unauthorized')
 
       req.user = user;
 
