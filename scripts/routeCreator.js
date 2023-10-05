@@ -24,12 +24,14 @@ module.exports = (routeParts, routeFileName, routeName) => {
     const routeContent = `// Controllers
 const ${routeName}Controller = require("${relativePath}/controllers/${routeParts.join('/')}/${routeName.toLowerCase()}.controller");
 const { jwtVerify } = require("${relativePath}/middlewares/authentication/jwt.middleware");
+const { validate } = require("${relativePath}/validations/validator");
+const { check } = require("${relativePath}/validations/jobs.validation");
 
 const router = require("express").Router();
 
 router.get('/', jwtVerify, ${routeName}Controller.get${routeName})
-router.post('/add', jwtVerify, ${routeName}Controller.add${routeName})
-router.put('/update/:id', jwtVerify, ${routeName}Controller.update${routeName})
+router.post('/add', jwtVerify, validate(check('add')), ${routeName}Controller.add${routeName})
+router.put('/update/:id', jwtVerify, validate(check('update')), ${routeName}Controller.update${routeName})
 router.delete(
     '/delete/:id',
     jwtVerify,

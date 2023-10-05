@@ -2,6 +2,7 @@ const routeCreator = require('./routeCreator');
 const modelCreator = require('./modelCreator');
 const controllerCreator = require('./controllerCreator');
 const postmanCreator = require('./postmanCreator');
+const validationCreator = require('./validationCreator');
 
 // Get the route argument from the command line
 const route = process.argv[2];
@@ -24,3 +25,4 @@ routeCreator(routeParts, routeFileName, routeName);
 controllerCreator(routeParts, routeFileName, routeName);
 modelCreator(routeParts, routeFileName, routeName);
 postmanCreator(routeParts, routeFileName, routeName, route);
+validationCreator(routeParts, routeFileName, routeName, route);

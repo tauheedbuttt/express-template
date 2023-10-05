@@ -6,8 +6,8 @@ const { jwtVerify } = require("../middlewares/authentication/jwt.middleware");
 
 // Validators
 
-const { check } = require("../middlewares/validations/auth.validation");
-const { validate } = require("../middlewares/validations/validator");
+const { check } = require("../validations/auth.validation");
+const { validate } = require("../validations/validator");
 
 const router = require("express").Router();
 
