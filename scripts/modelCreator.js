@@ -23,7 +23,11 @@ module.exports = (routeParts, routeFileName, routeName) => {
 const ${routeName} = new mongoose.Schema({
     name: {
         type: String
-    }
+    },
+    deleted: {
+        type: Boolean,
+        default: false
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('${routeName}', ${routeName});

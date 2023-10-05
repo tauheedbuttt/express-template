@@ -20,23 +20,69 @@ module.exports = (routeParts, routeFileName, routeName) => {
     createDirectories(controllerFolderPath);
 
     // Create the new controller file with dynamic content
-    const controllerContent = `const ${routeName} = require("${relativePath}/models/${routeName}.js");
+    const controllerContent = `const { aggregate, mongoID } = require("${relativePath}/helpers/filter.helper.js");
+const ${routeName} = require("${relativePath}/models/${routeName}.js");
 
 module.exports = {
     get${routeName}: async (req, res) => {
-        return res.success("${routeName} fetched successfully")
+        const { id, text } = req.query;
+
+        const ${routeName.toLowerCase()} = await aggregate(${routeName}, {
+            pagination: req.query,
+            filter: {
+                _id: mongoID(id),
+                search: {
+                    value: text,
+                    fields: ['name']
+                }
+            },
+            pipeline: []
+        });
+
+        return res.success("${routeName} fetched successfully", ${routeName.toLowerCase()})
     },
 
     add${routeName}: async (req, res) => {
+        const { name } = req.body;
+
+        const exists = await ${routeName}.findOne({ name });
+        if (exists) return res.forbidden("${routeName} already exists.");
+
+        const ${routeName.toLowerCase()} = await ${routeName}.create({
+            name
+        });
+
         return res.success("${routeName} added successfully")
     },
 
     update${routeName}: async (req, res) => {
+        const { id } = req.params;
+        const { name } = req.body;
+
+        const exists = await ${routeName}.findOne({ _id: { $ne: id }, name });
+        if (exists) return res.forbidden("${routeName} already exists.");
+
+        const ${routeName.toLowerCase()} = await ${routeName}.findByIdAndUpdate(
+            id,
+            { name },
+            { new: true }
+        );
+        if (!${routeName.toLowerCase()}) return res.notFound("${routeName} not found.");
+
         return res.success("${routeName} Updated Successfully")
     },
 
     delete${routeName}: async (req, res) => {
-        return res.success("${routeName} deleted successfully")
+        const { id, deleted } = req.params;
+
+        const ${routeName.toLowerCase()} = await ${routeName}.findByIdAndUpdate(
+            id,
+            { deleted },
+            { new: true }
+        );
+        if (!${routeName.toLowerCase()}) return res.notFound("${routeName} not found.");
+        
+        return res.success(deleted ? "${routeName} deleted successfully": "${routeName} recovered successfully" )
     }
 };
 `;

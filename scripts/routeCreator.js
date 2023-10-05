@@ -29,8 +29,19 @@ const router = require("express").Router();
 
 router.get('/', jwtVerify, ${routeName}Controller.get${routeName})
 router.post('/add', jwtVerify, ${routeName}Controller.add${routeName})
-router.delete('/delete/:id', jwtVerify, ${routeName}Controller.delete${routeName})
 router.put('/update/:id', jwtVerify, ${routeName}Controller.update${routeName})
+router.delete(
+    '/delete/:id',
+    jwtVerify,
+    (req, res, next) => { req.params.deleted = true; next(); }
+    , ${routeName}Controller.delete${routeName}
+)
+router.put(
+    '/recover/:id',
+    jwtVerify,
+    (req, res, next) => { req.params.deleted = false; next(); }
+    , ${routeName}Controller.delete${routeName}
+)
 
 module.exports = router
 `;
