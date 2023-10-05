@@ -3,16 +3,17 @@
     {
       "item": [
         {
-          "id": "febf278a-5068-4725-971b-83b6f4cf4341",
-          "name": "Get Jobs",
+          "id": "9de87f60-b4ae-4f29-8045-ee9ffd56e0c7",
+          "name": "Get Admin",
           "request": {
             "description": {
-              "content": "Get jobs",
+              "content": "Get admin/admin",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "jobs"
+                "admin",
+                "admin"
               ],
               "host": [
                 "{{BaseURL}}"
@@ -44,16 +45,17 @@
           "event": []
         },
         {
-          "id": "207640f6-9ecc-4572-9362-a7e08f7cb049",
-          "name": "Add Jobs",
+          "id": "e28d9d1a-47bc-475b-9309-6a270761e03d",
+          "name": "Add Admin",
           "request": {
             "description": {
-              "content": "Add jobs",
+              "content": "Add admin/admin",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "jobs",
+                "admin",
+                "admin",
                 "add"
               ],
               "host": [
@@ -72,16 +74,17 @@
           "event": []
         },
         {
-          "id": "fd1ceb09-7986-4807-afcc-b104a92dd8e2",
-          "name": "Update Jobs",
+          "id": "bb911ead-6250-465b-ae4a-d96b9c22c470",
+          "name": "Update Admin",
           "request": {
             "description": {
-              "content": "Update jobs",
+              "content": "Update admin/admin",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "jobs",
+                "admin",
+                "admin",
                 "update",
                 ":id"
               ],
@@ -101,16 +104,17 @@
           "event": []
         },
         {
-          "id": "692ebc93-0a65-48fd-905a-d9520d646f58",
-          "name": "Delete Jobs",
+          "id": "311f7eca-6a5f-469c-8207-a31a5233fca0",
+          "name": "Delete Admin",
           "request": {
             "description": {
-              "content": "Delete jobs",
+              "content": "Delete admin/admin",
               "type": "text/plain"
             },
             "url": {
               "path": [
-                "jobs",
+                "admin",
+                "admin",
                 "delete",
                 ":id"
               ],
@@ -130,8 +134,8 @@
       "event": [],
       "variable": [],
       "info": {
-        "_postman_id": "4ef3af83-3b9a-4140-b755-b6bcf4a586b7",
-        "name": "Jobs",
+        "_postman_id": "618aeab4-a7f9-4959-a30d-092bb216819c",
+        "name": "Admin",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
       }
     }
@@ -139,8 +143,8 @@
   "event": [],
   "variable": [],
   "info": {
-    "_postman_id": "34fba354-b045-45f5-a275-9a06a0ded5a3",
-    "name": "Jobs",
+    "_postman_id": "e3c00ac8-abff-4d25-a243-b6b7f127dfca",
+    "name": "Admin",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   }
 }
