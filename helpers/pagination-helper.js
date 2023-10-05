@@ -1,15 +1,14 @@
 module.exports = {
-    pageValues: async (query, filter, collection, pipeline) => {
+    pageValues: (query, filter, collection) => {
         const limit = query.limit ? parseInt(query.limit) : 10;
         const page = query.page ? parseInt(query.page) : 1;
         const skip = page == 1 ? 0 : (limit * page - limit);
 
-        const count = await collection.count(filter);
-        const pages = limit == 0 ? 1 : Math.ceil(count / limit);
-        const values = { limit, page, skip, pages, count };
-        return values
+        return { page, limit, skip }
     },
-    pageResponse: (items, page, limit, pages, total) => {
+    pageResponse: (items, page, limit, total) => {
+        total = total ? total : 0;
+        const pages = limit == 0 ? 1 : Math.ceil(total / limit);
         return ({
             items,
             page,

@@ -5,7 +5,7 @@ const filterOptions = (options, collection) => {
     const filter = {};
     Object.keys(options).forEach((key) => {
         const value = options[key];
-        if (value == null || value != undefined) return;
+        if (value == null || value == undefined) return;
 
         if (key == 'search') {
             if (!value?.value) return
@@ -94,8 +94,8 @@ const mongoID = (id) => {
 
 const aggregate = async (model, options) => {
     const filter = filterOptions(options.filter, model);
-    const { limit, page, skip, pages, count } = await pageValues(options.pagination, filter, model);
-    const data = await model.aggregate([
+    const { page, limit, skip } = pageValues(options.pagination, filter, model);
+    const response = await model.aggregate([
         ...(options.pipeline ? options.pipeline : []),
         {
             $match: { ...filter, deleted: false }
@@ -105,19 +105,15 @@ const aggregate = async (model, options) => {
         },
         aggregatePage(page, limit, skip)
     ]);
-    return pageResponse(data[0].data, page, limit, pages, count);
-}
 
-const find = async (model, options) => {
-    const filter = filterOptions(options.filter, model);
-    const { limit, page, skip, pages, count } = await pageValues(options.pagination, filter, model);
-    const data = await model.find(filter).skip(skip).limit(limit).sort('-id').populate(options.populate)
-    return pageResponse(data, page, limit, pages, count);
+    const data = response[0].data;
+    const count = response[0].metadata[0]?.total;
+
+    return pageResponse(data, page, limit, count);
 }
 
 module.exports = {
     aggregate,
-    find,
     uniqueQuery,
     mongoID
 }
