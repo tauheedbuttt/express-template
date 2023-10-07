@@ -4,9 +4,9 @@
 ![Express.js](https://img.shields.io/badge/Express.js-4.x-lightgrey)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-A minimalistic template for building web applications using Express.js.
+A boilerplate to kickstart an Express.JS project from scratch. It will provide you with multiple reusable features and won't have to rewrite the same boring code again.
 
-##### Table of Contents
+## Table of Contents
 
 - [Features](#Features)
 - [Getting Started](#Getting-Started)
