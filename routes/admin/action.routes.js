@@ -7,35 +7,35 @@ const { check } = require("../../validations//admin/action.validation");
 const router = require("express").Router();
 
 router.get(
-    '/', 
-    jwtVerify(), 
+    '/',
+    jwtVerify("Super Admin"),
     ActionController.getAction
 )
 
 router.post(
-    '/add', 
-    jwtVerify(), 
-    validate(check('add')), 
+    '/add',
+    jwtVerify("Super Admin"),
+    validate(check('add')),
     ActionController.addAction
 )
 
 router.put(
-    '/update/:id', 
-    jwtVerify(), 
-    validate(check('update')), 
+    '/update/:id',
+    jwtVerify("Super Admin"),
+    validate(check('update')),
     ActionController.updateAction
 )
 
 router.delete(
     '/delete/:id',
-    jwtVerify(),
+    jwtVerify("Super Admin"),
     (req, res, next) => { req.params.deleted = true; next(); }
     , ActionController.deleteAction
 )
 
 router.put(
     '/recover/:id',
-    jwtVerify(),
+    jwtVerify("Super Admin"),
     (req, res, next) => { req.params.deleted = false; next(); }
     , ActionController.deleteAction
 )
