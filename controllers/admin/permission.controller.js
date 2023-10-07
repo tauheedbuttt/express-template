@@ -1,5 +1,6 @@
 const { aggregate, mongoID } = require("../../helpers/filter.helper");
 const Permission = require("../../models/Permission");
+const Action = require("../../models/Action");
 
 module.exports = {
     getPermission: async (req, res) => {
@@ -15,7 +16,17 @@ module.exports = {
                     fields: ['name']
                 }
             },
-            pipeline: []
+            pipeline: [
+                {
+                    $lookup: {
+                        from: "actions",
+                        localField: "_id",
+                        foreignField: "permission",
+                        as: "actions",
+                        pipeline: [{ $project: { name: 1 } }]
+                    }
+                }
+            ]
         });
 
         return res.success("Permission fetched successfully", permission)
@@ -28,14 +39,15 @@ module.exports = {
         if (exists) return res.forbidden("Permission already exists.");
 
         // check if duplicate array of strings in actions
-        const duplicate = new Set(actions.map(action => action.toLowerCase()));
+        const duplicate = new Set(actions.map(action => action.name?.toLowerCase()));
         if (duplicate.size != actions.length) return res.forbidden("Duplicate actions not allowed.");
 
         const permission = await Permission.create({
             name,
-            actions,
             url
         });
+
+        await Action.bulkSave(actions.map(action => new Action({ ...action, permission })))
 
         return res.success("Permission added successfully")
     },
@@ -49,13 +61,17 @@ module.exports = {
 
         if (actions?.length > 0) {
             // check if duplicate array of strings in actions
-            const duplicate = new Set(actions.map(action => action.toLowerCase()));
+            const duplicate = new Set(actions.map(action => action.name?.toLowerCase()));
             if (duplicate.size != actions.length) return res.forbidden("Duplicate actions not allowed.");
+
+            // replace actions of this permission with passed actions, dont delete the original
+            await Action.deleteMany({ permission: id });
+            await Action.bulkSave(actions.map(action => new Action({ ...action, permission: id })))
         }
 
         const permission = await Permission.findByIdAndUpdate(
             id,
-            { name, actions, url },
+            { name, url },
             { new: true }
         );
         if (!permission) return res.notFound("Permission not found.");

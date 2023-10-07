@@ -3,17 +3,17 @@
     {
       "item": [
         {
-          "id": "cb184dad-f5cf-4e28-b545-928689f481f3",
-          "name": "Get Role",
+          "id": "1320ce16-7c8f-4f10-8cc2-513ce44af683",
+          "name": "Get Action",
           "request": {
             "description": {
-              "content": "Get admin/role",
+              "content": "Get admin/action",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "role"
+                "action"
               ],
               "host": [
                 "{{BaseURL}}"
@@ -49,17 +49,17 @@
           "event": []
         },
         {
-          "id": "abf27a60-65cb-415f-9a28-90fbc58d76b1",
-          "name": "Add Role",
+          "id": "bc7c3962-1fa4-4d3b-84cd-bea1f586509e",
+          "name": "Add Action",
           "request": {
             "description": {
-              "content": "Add admin/role",
+              "content": "Add admin/action",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "role",
+                "action",
                 "add"
               ],
               "host": [
@@ -78,17 +78,17 @@
           "event": []
         },
         {
-          "id": "52d3eff7-8e23-4b4d-aad5-4284f9d360df",
-          "name": "Update Role",
+          "id": "d378aa5e-f332-41b5-ae55-cee78d96a9e4",
+          "name": "Update Action",
           "request": {
             "description": {
-              "content": "Update admin/role",
+              "content": "Update admin/action",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "role",
+                "action",
                 "update",
                 ":id"
               ],
@@ -108,17 +108,17 @@
           "event": []
         },
         {
-          "id": "5c50871b-ba70-4a7a-8c9f-5ce2a999528c",
-          "name": "Delete Role",
+          "id": "a2a7db74-99e2-4189-a2ab-e2b19b791a75",
+          "name": "Delete Action",
           "request": {
             "description": {
-              "content": "Delete admin/role",
+              "content": "Delete admin/action",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "role",
+                "action",
                 "delete",
                 ":id"
               ],
@@ -135,17 +135,17 @@
           "event": []
         },
         {
-          "id": "1c0eb95c-06c7-429c-9c1a-b86e0e996d11",
-          "name": "Recover Role",
+          "id": "66fc5c5f-d886-4c77-abef-4d3484173925",
+          "name": "Recover Action",
           "request": {
             "description": {
-              "content": "Recover admin/role",
+              "content": "Recover admin/action",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "role",
+                "action",
                 "recover",
                 ":id"
               ],
@@ -165,8 +165,8 @@
       "event": [],
       "variable": [],
       "info": {
-        "_postman_id": "fbe8362a-5186-47a2-80d1-2748ca0f33fa",
-        "name": "Role",
+        "_postman_id": "85689c80-6547-4052-819f-6378fe2e9083",
+        "name": "Action",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
       }
     }
@@ -174,8 +174,8 @@
   "event": [],
   "variable": [],
   "info": {
-    "_postman_id": "cf1df1c9-c101-46e9-bb82-2836e73322a5",
-    "name": "Role",
+    "_postman_id": "5f99daa9-5350-4d47-a209-842a439f2395",
+    "name": "Action",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   }
 }

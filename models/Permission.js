@@ -7,9 +7,6 @@ const Permission = new mongoose.Schema({
     url: {
         type: String
     },
-    actions: {
-        type: [String]
-    },
     deleted: {
         type: Boolean,
         default: false

@@ -25,10 +25,16 @@ const jwtVerify = (...roles) => (req, res, next) => {
           populate: {
             path: 'permissions',
             select: 'name actions',
-            populate: {
-              path: 'permission',
-              select: 'name url'
-            }
+            populate: [
+              {
+                path: 'permission',
+                select: 'name url',
+              },
+              {
+                path: 'actions',
+                select: 'name ',
+              },
+            ]
           }
         })
         .select('-password');

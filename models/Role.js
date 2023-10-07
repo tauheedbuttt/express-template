@@ -9,7 +9,10 @@ const Role = new mongoose.Schema({
             type: mongoose.Types.ObjectId,
             ref: 'Permission'
         },
-        actions: [String]
+        actions: [{
+            type: mongoose.Types.ObjectId,
+            ref: 'Action'
+        }]
     }],
     deleted: {
         type: Boolean,

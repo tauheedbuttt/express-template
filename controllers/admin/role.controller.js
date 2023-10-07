@@ -11,9 +11,23 @@ const validatePermission = async (permissions) => {
         return "Duplicate permissions are not allowed.";
 
     // check if permissions provided exists
-    const existingPermissions = await Permission.find({
-        _id: { $in: permissions.map(item => item.permission) }
-    });
+    const existingPermissions = await Permission
+        .aggregate([
+            {
+                $match: {
+                    _id: { $in: permissions.map(item => mongoID(item.permission)) }
+                }
+            },
+            {
+                $lookup: {
+                    from: "actions",
+                    localField: "_id",
+                    foreignField: "permission",
+                    as: "actions",
+                    pipeline: [{ $project: { name: 1 } }]
+                }
+            }
+        ])
     if (existingPermissions.length != permissions.length)
         return "One or more permissions do not exist.";
 
@@ -21,7 +35,7 @@ const validatePermission = async (permissions) => {
     for (const permission of existingPermissions) {
         const passedPermission = permissions?.find(item => permission._id.equals(item.permission))
         const actions = passedPermission.actions;
-        const existingActions = actions?.filter(action => permission.actions.includes(action))
+        const existingActions = actions?.filter(action => permission.actions.map(item => item._id.toString()).includes(action))
         if (existingActions?.length != actions.length)
             return "One or more actions do not exist for " + permission.name;
     }
@@ -50,11 +64,25 @@ module.exports = {
                         from: "permissions",
                         localField: "permissions.permission",
                         foreignField: "_id",
-                        as: "permissions.permission"
+                        as: "permissions.permission",
+                        pipeline: [
+                            { $project: { name: 1, url: 1 } }
+                        ]
                     }
                 },
                 {
                     $unwind: "$permissions.permission"
+                },
+                {
+                    $lookup: {
+                        from: "actions",
+                        localField: "permissions.actions",
+                        foreignField: "_id",
+                        as: "permissions.actions",
+                        pipeline: [
+                            { $project: { name: 1 } }
+                        ]
+                    }
                 },
                 {
                     $project: {
@@ -71,26 +99,6 @@ module.exports = {
                         __v: 1
                     }
                 },
-                {
-                    $project: {
-                        _id: 1,
-                        name: 1,
-                        permissions: {
-                            permission: {
-                                _id: 1,
-                                name: 1,
-                                url: 1,
-                            },
-                            actions: 1,
-                        },
-                        deleted: 1,
-                        editable: 1,
-                        createdAt: 1,
-                        updatedAt: 1,
-                        __v: 1
-                    }
-                },
-
             ]
         });
 
