@@ -30,13 +30,13 @@ router.post(
 
 router.get(
     "/profile",
-    jwtVerify,
+    jwtVerify(),
     AuthController.profile
 );
 
 router.put(
     "/update",
-    jwtVerify,
+    jwtVerify(),
     AuthController.update
 );
 

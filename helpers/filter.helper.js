@@ -98,7 +98,7 @@ const aggregate = async (model, options) => {
     const response = await model.aggregate([
         ...(options.pipeline ? options.pipeline : []),
         {
-            $match: { ...filter, deleted: false }
+            $match: { ...filter, deleted: filter.deleted ? filter.deleted : false }
         },
         {
             $sort: { _id: -1 }

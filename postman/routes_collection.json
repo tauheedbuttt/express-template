@@ -3,17 +3,17 @@
     {
       "item": [
         {
-          "id": "9de87f60-b4ae-4f29-8045-ee9ffd56e0c7",
-          "name": "Get Admin",
+          "id": "cb184dad-f5cf-4e28-b545-928689f481f3",
+          "name": "Get Role",
           "request": {
             "description": {
-              "content": "Get admin/admin",
+              "content": "Get admin/role",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "admin"
+                "role"
               ],
               "host": [
                 "{{BaseURL}}"
@@ -32,6 +32,10 @@
                   "value": 0
                 },
                 {
+                  "key": "deleted",
+                  "value": false
+                },
+                {
                   "key": "text",
                   "value": "Test"
                 }
@@ -45,17 +49,17 @@
           "event": []
         },
         {
-          "id": "e28d9d1a-47bc-475b-9309-6a270761e03d",
-          "name": "Add Admin",
+          "id": "abf27a60-65cb-415f-9a28-90fbc58d76b1",
+          "name": "Add Role",
           "request": {
             "description": {
-              "content": "Add admin/admin",
+              "content": "Add admin/role",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "admin",
+                "role",
                 "add"
               ],
               "host": [
@@ -74,17 +78,17 @@
           "event": []
         },
         {
-          "id": "bb911ead-6250-465b-ae4a-d96b9c22c470",
-          "name": "Update Admin",
+          "id": "52d3eff7-8e23-4b4d-aad5-4284f9d360df",
+          "name": "Update Role",
           "request": {
             "description": {
-              "content": "Update admin/admin",
+              "content": "Update admin/role",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "admin",
+                "role",
                 "update",
                 ":id"
               ],
@@ -104,17 +108,17 @@
           "event": []
         },
         {
-          "id": "311f7eca-6a5f-469c-8207-a31a5233fca0",
-          "name": "Delete Admin",
+          "id": "5c50871b-ba70-4a7a-8c9f-5ce2a999528c",
+          "name": "Delete Role",
           "request": {
             "description": {
-              "content": "Delete admin/admin",
+              "content": "Delete admin/role",
               "type": "text/plain"
             },
             "url": {
               "path": [
                 "admin",
-                "admin",
+                "role",
                 "delete",
                 ":id"
               ],
@@ -129,13 +133,40 @@
           },
           "response": [],
           "event": []
+        },
+        {
+          "id": "1c0eb95c-06c7-429c-9c1a-b86e0e996d11",
+          "name": "Recover Role",
+          "request": {
+            "description": {
+              "content": "Recover admin/role",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "admin",
+                "role",
+                "recover",
+                ":id"
+              ],
+              "host": [
+                "{{BaseURL}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "PUT",
+            "body": {}
+          },
+          "response": [],
+          "event": []
         }
       ],
       "event": [],
       "variable": [],
       "info": {
-        "_postman_id": "618aeab4-a7f9-4959-a30d-092bb216819c",
-        "name": "Admin",
+        "_postman_id": "fbe8362a-5186-47a2-80d1-2748ca0f33fa",
+        "name": "Role",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
       }
     }
@@ -143,8 +174,8 @@
   "event": [],
   "variable": [],
   "info": {
-    "_postman_id": "e3c00ac8-abff-4d25-a243-b6b7f127dfca",
-    "name": "Admin",
+    "_postman_id": "cf1df1c9-c101-46e9-bb82-2836e73322a5",
+    "name": "Role",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   }
 }
