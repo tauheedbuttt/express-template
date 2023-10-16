@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     role: {
-        type: String,
-        default: 'vendor'
+        type: mongoose.Types.ObjectId,
+        ref: 'Role'
     },
     status: {
         type: String,

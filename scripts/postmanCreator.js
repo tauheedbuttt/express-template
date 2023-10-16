@@ -33,6 +33,7 @@ module.exports = (routeParts, routeFileName, routeName, route) => {
                 page: 1,
                 limit: 10,
                 id: 0,
+                deleted: false,
                 text: "Test"
             }
         },
@@ -58,6 +59,13 @@ module.exports = (routeParts, routeFileName, routeName, route) => {
             path: `${route}/delete/:id`,
             description: `Delete ${route}`,
             name: `Delete ${routeName}`,
+        },
+        {
+
+            method: 'PUT',
+            path: `${route}/recover/:id`,
+            description: `Recover ${route}`,
+            name: `Recover ${routeName}`
         },
     ];
 

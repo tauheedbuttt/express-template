@@ -6,6 +6,7 @@ const validationCreator = require('./validationCreator');
 
 // Get the route argument from the command line
 const route = process.argv[2];
+const skipArgs = process.argv.filter(item => item.includes('--skip'))[0];
 
 if (!route) {
     console.error('Please provide a route argument, e.g., "admin/jobs".');
@@ -21,8 +22,35 @@ const routeFileName = routeParts.pop() + '.routes.js';
 // Get the route name (capitalize the first letter)
 const routeName = routeFileName.charAt(0).toUpperCase() + routeFileName.slice(1, -10); // Remove ".routes.js" and capitalize
 
-routeCreator(routeParts, routeFileName, routeName);
-controllerCreator(routeParts, routeFileName, routeName);
-modelCreator(routeParts, routeFileName, routeName);
-postmanCreator(routeParts, routeFileName, routeName, route);
-validationCreator(routeParts, routeFileName, routeName, route);
+// Function to check if a creator should be skipped
+function shouldSkip(creator) {
+    return skipArgs?.includes(creator);
+}
+
+const creators = [
+    {
+        name: 'route',
+        callback: () => routeCreator(routeParts, routeFileName, routeName)
+    },
+    {
+        name: 'controller',
+        callback: () => controllerCreator(routeParts, routeFileName, routeName)
+    },
+    {
+        name: 'model',
+        callback: () => modelCreator(routeParts, routeFileName, routeName)
+    },
+    {
+        name: 'postman',
+        callback: () => postmanCreator(routeParts, routeFileName, routeName, route)
+    },
+    {
+        name: 'validation',
+        callback: () => validationCreator(routeParts, routeFileName, routeName, route)
+    }
+]
+
+creators.forEach((item) => {
+    if (!shouldSkip(item.name))
+        item.callback();
+})

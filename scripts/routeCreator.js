@@ -25,22 +25,40 @@ module.exports = (routeParts, routeFileName, routeName) => {
 const ${routeName}Controller = require("${relativePath}/controllers/${routeParts.join('/')}/${routeName.toLowerCase()}.controller");
 const { jwtVerify } = require("${relativePath}/middlewares/authentication/jwt.middleware");
 const { validate } = require("${relativePath}/validations/validator");
-const { check } = require("${relativePath}/validations/jobs.validation");
+const { check } = require("${relativePath}/validations//${routeParts.join('/')}/${routeName.toLowerCase()}.validation");
 
 const router = require("express").Router();
 
-router.get('/', jwtVerify, ${routeName}Controller.get${routeName})
-router.post('/add', jwtVerify, validate(check('add')), ${routeName}Controller.add${routeName})
-router.put('/update/:id', jwtVerify, validate(check('update')), ${routeName}Controller.update${routeName})
+router.get(
+    '/', 
+    jwtVerify(), 
+    ${routeName}Controller.get${routeName}
+)
+
+router.post(
+    '/add', 
+    jwtVerify(), 
+    validate(check('add')), 
+    ${routeName}Controller.add${routeName}
+)
+
+router.put(
+    '/update/:id', 
+    jwtVerify(), 
+    validate(check('update')), 
+    ${routeName}Controller.update${routeName}
+)
+
 router.delete(
     '/delete/:id',
-    jwtVerify,
+    jwtVerify(),
     (req, res, next) => { req.params.deleted = true; next(); }
     , ${routeName}Controller.delete${routeName}
 )
+
 router.put(
     '/recover/:id',
-    jwtVerify,
+    jwtVerify(),
     (req, res, next) => { req.params.deleted = false; next(); }
     , ${routeName}Controller.delete${routeName}
 )

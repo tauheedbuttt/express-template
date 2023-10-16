@@ -20,17 +20,18 @@ module.exports = (routeParts, routeFileName, routeName) => {
     createDirectories(controllerFolderPath);
 
     // Create the new controller file with dynamic content
-    const controllerContent = `const { aggregate, mongoID } = require("${relativePath}/helpers/filter.helper.js");
-const ${routeName} = require("${relativePath}/models/${routeName}.js");
+    const controllerContent = `const { aggregate, mongoID } = require("${relativePath}/helpers/filter.helper");
+const ${routeName} = require("${relativePath}/models/${routeName}");
 
 module.exports = {
     get${routeName}: async (req, res) => {
-        const { id, text } = req.query;
+        const { id, text, deleted } = req.query;
 
         const ${routeName.toLowerCase()} = await aggregate(${routeName}, {
             pagination: req.query,
             filter: {
                 _id: mongoID(id),
+                deleted,
                 search: {
                     value: text,
                     fields: ['name']

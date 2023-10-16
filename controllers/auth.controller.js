@@ -15,7 +15,20 @@ module.exports = {
         const { email, password } = req.body;
 
         // get user
-        const user = await User.findOne({ email })
+        const user = await User
+            .findOne({ email })
+            .populate({
+                path: 'role',
+                select: 'name permissions',
+                populate: {
+                    path: 'permissions',
+                    select: 'name actions',
+                    populate: {
+                        path: 'permission',
+                        select: 'name url'
+                    }
+                }
+            })
         if (!user) return res.forbidden('Invalid Email or Password');
         if (user.status != 'Approved') return res.forbidden('Your account has not been approved yet');
 
@@ -28,11 +41,10 @@ module.exports = {
 
         const token = createToken({
             sub: user.id,
-            iam: user.role,
             name: user.name
         })
 
-        return res.success('Login successfull', { token })
+        return res.success('Login successfull', { token, role: user.role })
     },
 
     register: async (req, res) => {
@@ -47,10 +59,6 @@ module.exports = {
             return res.forbidden('Confirm Password is not same as Password.');
 
         const unique = [
-            {
-                field: 'name',
-                value: name
-            },
             {
                 field: 'email',
                 value: email
@@ -77,10 +85,6 @@ module.exports = {
         const { email, name } = req.body;
 
         const unique = [
-            {
-                field: 'name',
-                value: name
-            },
             {
                 field: 'email',
                 value: email
@@ -145,7 +149,8 @@ module.exports = {
         // Normal Password Reset
         if (!resetPasswordToken) {
             if (!old_password) res.notFound('old_password is missing');
-            return jwtVerify(req, async () => {
+            const middleware = jwtVerify();
+            return middleware(req, async () => {
                 try {
                     const user = await User.findById(req.user.id);
                     await user.comparePassword(old_password)
