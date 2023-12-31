@@ -3,7 +3,7 @@ const path = require('path');
 const { Collection, Item, Request, res } = require('postman-collection');
 
 module.exports = (routeParts, routeFileName, routeName, route) => {
-    const postmanFolderPath = path.join(__dirname, '..', 'postman');
+    const postmanFolderPath = path.join(__dirname, '../..', 'postman');
 
     // Create the necessary directories recursively for both routes and controllers
     const createDirectories = (folderPath) => {
@@ -34,7 +34,10 @@ module.exports = (routeParts, routeFileName, routeName, route) => {
                 limit: 10,
                 id: 0,
                 deleted: false,
-                text: "Test"
+                text: "Test",
+                'sort[createdAt]': -1,
+                'fields[name]': 1,
+
             }
         },
         {

@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = (routeParts, routeFileName, routeName) => {
     // Define the base folder for validations (outside the "scripts" folder)
-    const validationsBaseFolder = path.join(__dirname, '..', 'validations');
+    const validationsBaseFolder = path.join(__dirname, '../..', 'validations');
 
     // Calculate the relative path to validations based on the depth of the route
     const relativePath = Array(routeParts.length + 1).fill('..').join('/');

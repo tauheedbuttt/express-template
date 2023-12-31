@@ -94,15 +94,18 @@ const mongoID = (id) => {
 
 const aggregate = async (model, options) => {
     const filter = filterOptions(options.filter, model);
-    const { page, limit, skip } = pageValues(options.pagination, filter, model);
+    const { page, limit, skip, sort, fields } = pageValues(options.pagination, filter, model);
     const response = await model.aggregate([
         ...(options.pipeline ? options.pipeline : []),
         {
             $match: { ...filter, deleted: filter.deleted ? filter.deleted : false }
         },
         {
-            $sort: { _id: -1 }
+            $sort: sort ? sort : { _id: -1 }
         },
+        ...(!fields ? [] : [{
+            $project: fields
+        }]),
         aggregatePage(page, limit, skip)
     ]);
 

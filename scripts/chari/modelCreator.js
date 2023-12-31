@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = (routeParts, routeFileName, routeName) => {
     // Define the base folder for controllers (outside the "scripts" folder)
-    const modelBaseFolder = path.join(__dirname, '..', 'models');
+    const modelBaseFolder = path.join(__dirname, '../..', 'models');
 
     // Build the full path to the new route file
     const modelFolderPath = path.join(modelBaseFolder);

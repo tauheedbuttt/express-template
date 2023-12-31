@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = (routeParts, routeFileName, routeName) => {
     // Define the base folder for routes (outside the "scripts" folder)
-    const routesBaseFolder = path.join(__dirname, '..', 'routes');
+    const routesBaseFolder = path.join(__dirname, '../..', 'routes');
 
     // Calculate the relative path to controllers, middlewares, and constants based on the depth of the route
     const relativePath = Array(routeParts.length + 1).fill('..').join('/');
