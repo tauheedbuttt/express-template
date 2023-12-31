@@ -8,7 +8,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "deploy": "git checkout dev && git add ./ && git commit -m \"%npm_config_foo%\" && git push -u origin dev && git checkout main && git merge dev",
-    "route": "node ./scripts/route.js"
+    "route": "node ./scripts/chari/route.js"
   },
   "repository": {
     "type": "git",

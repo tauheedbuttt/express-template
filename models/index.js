@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { seed } = require("../scripts/seeds/index");
 
 const NODE_ENV = process.env.NODE_ENV;
 const MONGO_DB_URL =
@@ -15,6 +16,7 @@ const DBConnection = async () => {
   try {
     const db = await mongoose.connect(MONGO_DB_URL, options);
     console.log(`MongoDB Connection Established On host ${db.connection.host}`);
+    seed();
   } catch (error) {
     console.log(`MongoDB Connection Error: ${error.message}`);
     process.exit(1);
