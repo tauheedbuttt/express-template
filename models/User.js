@@ -13,10 +13,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
     },
-    imageURL: {
-        type: String,
-    },
-    socketID: {
+    image: {
         type: String,
     },
     role: {
@@ -28,59 +25,37 @@ const userSchema = new mongoose.Schema({
         enum: ['Approved', 'Pending', 'Blocked', 'Deleted'],
         default: 'Pending'
     },
+    deleted: {
+        type: Boolean,
+        default: false,
+    },
 
     // For Password Reset
     resetPasswordToken: String,
     resetPasswordExpire: Number
 }, { timestamps: true });
 
-//                                                      ----------------------------------------------------
-//                                                                       HASHING TECHNIQUES
-//                                                      ----------------------------------------------------
-// // --------------------------------------HASH THE Password BEFORE SAVING IN DB----------------------------------------
-// // called before save() call
 userSchema.pre('save', function (next) {
     const user = this;
-
-    // if no modification done, dont SALT it
     if (!user.isModified('password')) {
         return next();
     }
-
-    // SALT the password
-    // if pass = "admin"
-    // SALT will convert it into "adminsdbfjkhsdbkj"
-    // 10 shows the length of random generated string
     bcrypt.genSalt(10, (err, salt) => {
-        if (err) {
-            return next(err);
-        }
-        // hash the code with the SALT genereated earlier
+        if (err) return next(err);
         bcrypt.hash(user.password, salt, (err, hash) => {
-            if (err) {
-                return next(err);
-            }
-            // set the code as hashed from
+            if (err) return next(err);
             user.password = hash;
             next();
         })
     })
 });
 
-// // --------------------------------------COMPARE Password WITH HASHED FORM----------------------------------------
 userSchema.methods.comparePassword = function (candidatePassword) {
-    const user = this; //SALTed code inside mongoDB
+    const user = this;
     return new Promise((resolve, reject) => {
         bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
-            // incase of error
-            if (err) {
-                return reject(err);
-            }
-            // incase passwords dont match
-            if (!isMatch) {
-                return reject(false);
-            }
-            // codes matched
+            if (err) return reject(err);
+            if (!isMatch) return reject(false);
             return resolve(true);
         });
     })
