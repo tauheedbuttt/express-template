@@ -22,7 +22,7 @@ module.exports = {
                 "email": "test@test.com",
                 "name": "Super Admin",
                 "status": "Approved",
-                "password": "$2b$10$YdEreojwCq2.FCvuz7tE2Ofh0GtWdF2b6W1m3PW2Uj2avF68dgHaa",
+                "password": "Admin.123",
                 "updatedAt": "2023-10-08T16:02:41.531Z",
                 "deleted": false,
                 "country": "6502dc77cccbb801093d5ee8",
