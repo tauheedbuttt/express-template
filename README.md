@@ -19,14 +19,31 @@ A boilerplate to kickstart an Express.JS project from scratch. It will provide y
 ## Features
 
 - Dynamic endpoint routing for flexible URL handling
-- Functionality for dynamic endpoint creation
+- Functionality for dynamic endpoint creation via CLI
 - Helper files for streamlined MongoDB queries and pagination
-- Roles-based authentication for access control
+- Role-based authentication and access control
 - Multer and Nodemailer setup for file uploading and email functionality
 - Socket.io for real-time communication
-- Error handling middlewares for robust error management.
-- Response structure middleware for consistent response formatting.
-- Validation through express-validator for data validation and sanitization.
+- Error handling middlewares for robust error management
+- Response structure middleware for consistent response formatting
+- Validation through express-validator for data validation and sanitization
+
+## Technologies Used
+
+| Technology             | Purpose                 |
+| ---------------------- | ----------------------- |
+| **Node.js**            | Runtime environment     |
+| **Express.js**         | Web framework           |
+| **MongoDB / Mongoose** | Database and ODM        |
+| **Socket.io**          | Real-time communication |
+| **JWT (jsonwebtoken)** | Authentication tokens   |
+| **bcrypt**             | Password hashing        |
+| **Multer**             | File uploads            |
+| **Nodemailer**         | Email service           |
+| **express-validator**  | Request validation      |
+| **EJS**                | Email templating        |
+| **Morgan**             | HTTP request logging    |
+| **dotenv**             | Environment variables   |
 
 ## Getting Started
 
@@ -179,6 +196,22 @@ Example response send to the use
 ## Contributing
 
 Contributions are welcome! If you'd like to add new features, improve existing ones, or report issues, please open an issue or submit a pull request.
+
+## Author
+
+**Tauheed Butt** – Sole developer and maintainer
+
+I built this entire project from scratch, including:
+
+- Project architecture and folder structure
+- Authentication system with JWT and role-based access control
+- Dynamic route generation CLI tool
+- MongoDB query helpers with pagination and filtering
+- Real-time communication setup with Socket.io
+- Email service integration with Nodemailer
+- Validation layer using express-validator
+- Error handling and response middleware
+- Postman collection generator
 
 ## License
 
